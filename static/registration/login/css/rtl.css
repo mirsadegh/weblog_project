@@ -14,3 +14,9 @@ body {
     right: initial;
     left: 0 ;
 }
+
+.errors{
+    color:red;
+    background-color: #e99696;
+    padding: 20px 30px;
+}

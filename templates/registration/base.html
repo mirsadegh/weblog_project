@@ -53,6 +53,19 @@
           <a target="_blank" href="{% url 'blog:home' %}" class="nav-link">نمایش سایت</a>
         </li>
       </ul>
+      <ul class="navbar-nav mr-auto-navbav">
+        <li class="nav-item">
+          <!-- <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="{% url 'account:logout' %}">
+            <i class="fas fa-sign-out-alt"></i>
+          </a> -->
+          <form action="{% url 'account:logout' %}" method="post" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" class="nav-link" style="border: none; background: none;">
+              <i class="fas fa-sign-out-alt"></i>
+            </button>
+          </form>
+        </li>
+      </ul>
 
     </nav>
     <!-- /.navbar -->

@@ -5,7 +5,7 @@ from django.views.generic import (ListView,
                                   DeleteView,
                                   )
 from django.urls import reverse_lazy
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, PasswordChangeView
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -74,4 +74,7 @@ class Login(LoginView):
             return reverse_lazy("account:profile")
 
 
-# How to Build an E-commerce Website with Django and Python freeCodeCamp
+class PasswordChange(PasswordChangeView):
+    success_url = reverse_lazy("account:password_change_done")
+
+    # How to Build an E-commerce Website with Django and Python freeCodeCamp

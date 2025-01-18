@@ -24,8 +24,8 @@ SECRET_KEY = "django-insecure-rl2_()mco@bq&=4e^k#94a^dk%sh+4l7!0o9#orqr$%=$q!w23
 
 
 LOGIN_REDIRECT_URL = "account:home"
-LOGOUT_REDIRECT_URL = "account:login"
-LOGIN_URL = "account:login"
+LOGOUT_REDIRECT_URL = "login"
+LOGIN_URL = "login"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

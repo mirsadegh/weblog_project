@@ -10,6 +10,9 @@
             <div class="col-md-10 col-lg-8 col-xl-7">
                 <div class="site-heading">
                     <h1>{{object.title}}</h1>
+                    {% if article.is_special %}
+                    <span class="badge bg-danger" style="font-size: 14px">ویژه</span>
+                    {% endif %}
                     <time>{{ object.jpublish }}</time>
 
                 </div>
@@ -22,7 +25,21 @@
     <div class="container px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 justify-content-center">
             <div class="col-md-10 col-lg-8 col-xl-7 text-justify">
+
+                {% if object.is_special %}
+                {% if user.is_authenticated and user.is_special_user or user == object.author or user.is_superuser %}
                 {{ object.description|safe }}
+                {% else %}
+                {{ article.description|striptags|truncatewords:30 }}
+                <p class="alert alert-warning"> این مقاله ویژه است و برای مشاهده آن <a href="#">اشتراک ویژه </a> تهیه
+                    نمایید</p>
+
+                {% endif %}
+                {% else %}
+                {{ object.description|safe }}
+                {% endif %}
+
+
             </div>
         </div>
     </div>

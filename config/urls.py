@@ -27,8 +27,9 @@ urlpatterns = [
     path("login/", Login.as_view(), name="login"),
     path('register/', Register.as_view(), name='register'),
     path('activate/<slug:uidb64>/<slug:token>/', activate, name='activate'),
-    path("admin/", admin.site.urls),
     path("account/", include("account.urls")),
+    path("admin/", admin.site.urls),
+    path('comment/', include('comment.urls')),
 
 
 ]

@@ -1,5 +1,7 @@
 {% extends 'blog/base.html' %}
 {% load static %}
+{% load comment_tags %}
+
 
 {% block title %} | {{ object.title }} {% endblock %}
 
@@ -38,6 +40,12 @@
                 {% else %}
                 {{ object.description|safe }}
                 {% endif %}
+
+
+                {% render_comments object request %}
+                {% include_bootstrap %}
+                {% include_static %}
+
 
 
             </div>

@@ -1,5 +1,6 @@
 {% extends 'blog/base.html' %}
 {% load static %}
+{% load ratings %}
 
 {% block main %}
 
@@ -38,6 +39,7 @@
 
 
                     </h2>
+                    <div>{% ratings article %}</div>
                     <h3 class="post-subtitle">{{ article.description|striptags|truncatewords:30 }}</h3>
                 </a>
                 <p class="post-meta">

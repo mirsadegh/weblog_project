@@ -151,3 +151,12 @@ input#search-input:focus::placeholder {
     background-color: #fadbd8;
     border-color: #f8cdc8;
 }
+
+
+.js-comment-content {
+    font-family: Sahel !important;
+}
+
+.blockquote-footer {
+    padding: 28px 0 15px !important;
+}

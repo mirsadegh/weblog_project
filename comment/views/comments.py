@@ -15,6 +15,9 @@ from comment.utils import (
 )
 from comment.mixins import CanCreateMixin, CanEditMixin, CanDeleteMixin
 from comment.conf import settings
+from django.core.mail import EmailMessage
+from django.contrib.sites.shortcuts import get_current_site
+from django.urls import reverse
 
 
 class BaseCommentView(FormView):
@@ -65,7 +68,7 @@ class CreateComment(CanCreateMixin, BaseCommentView):
             parent=parent_comment,
             email=email,
             posted=time_posted
-            )
+        )
 
         if settings.COMMENT_ALLOW_ANONYMOUS and not user:
             # send response, please verify your email to post this comment.
@@ -74,6 +77,46 @@ class CreateComment(CanCreateMixin, BaseCommentView):
         else:
             _comment.save()
             self.comment = _comment
+
+         # send email section
+        current_site = get_current_site(self.request)
+        article = self.comment.content_object
+        author_email = article.author.email
+        user_email = self.comment.user.email
+        if author_email == user_email:
+            author_email = False
+            user_email = False
+        parent_email = False
+        if self.comment.parent:
+            parent_email = self.comment.parent.user.email
+            if parent_email in [author_email, user_email]:
+                parent_email = False
+
+        if author_email:
+            email = EmailMessage(
+                "دیدگاه جدید",
+                "دیدگاه جدیدی برای مقاله «{}» که شما نوینده آن هستید، ارسال شده:\n{}{}".format(
+                    article, current_site, reverse('blog:detail', kwargs={'slug': article.slug})),
+                to=[author_email]
+            )
+            email.send()
+
+        if user_email:
+            email = EmailMessage(
+                "دیدگاه دریافت شد",
+                "دیدگاه شما دریافت شد و به زودی به آن پاسخ می دهیم.",
+                to=[user_email]
+            )
+            email.send()
+
+        if parent_email:
+            email = EmailMessage(
+                "پاسخ به دیدگاه شما",
+                "پاسخی به دیدگاه شما در مقاله «{}» ثبت شده است. برای مشاهده بر روی لینک زیر کلیک کنید:\n{}{}".format(
+                    article, current_site, reverse('blog:detail', kwargs={'slug': article.slug})),
+                to=[parent_email]
+            )
+            email.send()
 
         return self.render_to_response(self.get_context_data())
 
@@ -87,12 +130,14 @@ class UpdateComment(CanEditMixin, BaseCommentView):
 
     def get(self, request, *args, **kwargs):
         context = self.get_context_data()
-        context['comment_form'] = CommentForm(instance=self.comment, request=self.request)
+        context['comment_form'] = CommentForm(
+            instance=self.comment, request=self.request)
         context['comment'] = self.comment
         return render(request, 'comment/comments/update_comment.html', context)
 
     def post(self, request, *args, **kwargs):
-        form = CommentForm(request.POST, instance=self.comment, request=self.request)
+        form = CommentForm(
+            request.POST, instance=self.comment, request=self.request)
         context = self.get_context_data()
         if form.is_valid():
             form.save()
@@ -112,7 +157,8 @@ class DeleteComment(CanDeleteMixin, BaseCommentView):
         context = self.get_context_data()
         context["comment"] = self.comment
         context['has_parent'] = not self.comment.is_parent
-        data['html_form'] = render_to_string('comment/comments/comment_modal.html', context, request=request)
+        data['html_form'] = render_to_string(
+            'comment/comments/comment_modal.html', context, request=request)
         return JsonResponse(data)
 
     def post(self, request, *args, **kwargs):
@@ -130,7 +176,8 @@ class ConfirmComment(View):
         if comment.why_invalid == CommentFailReason.BAD:
             messages.error(request, _('The link seems to be broken.'))
         elif comment.why_invalid == CommentFailReason.EXISTS:
-            messages.warning(request, _('The comment has already been verified.'))
+            messages.warning(request, _(
+                'The comment has already been verified.'))
 
         if not comment.is_valid:
             return render(request, template_name='comment/anonymous/discarded.html')

@@ -55,6 +55,7 @@
                     <a href="{% url 'blog:category' cat.slug %}">#{{ cat.title }}</a>
                     {% endfor %}
                 </div>
+                <div>بازدیدها: {{article.hits.count}}</div>
             </div>
             <!-- Divider-->
             <hr class="my-4" />

@@ -3,6 +3,7 @@
 {% load comment_tags %}
 {% load ratings %}
 {% load base_tags %}
+{% load humanize %}
 
 {% block title %} | {{ object.title }} {% endblock %}
 
@@ -17,7 +18,7 @@
                     {% if article.is_special %}
                     <span class="badge bg-danger" style="font-size: 14px">ویژه</span>
                     {% endif %}
-                    <time>{{ object.jpublish }}</time>
+                    <time>{{ object.publish|naturaltime }}</time>
                     <div>{% ratings object %}</div>
                     <div>بازدیدها: {{object.hits.count}}</div>
 

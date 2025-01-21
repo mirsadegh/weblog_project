@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     "account.apps.AccountConfig",
     "extensions",
 
+    'django.contrib.humanize',
+
     'widget_tweaks',
     'crispy_forms',
     'crispy_bootstrap4',

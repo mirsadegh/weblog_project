@@ -22,14 +22,15 @@ def category_navbar():
     }
 
 
-@register.inclusion_tag("blog/partials/popular_articles.html")
+@register.inclusion_tag("blog/partials/sidebar.html")
 def popular_articles():
     last_month = datetime.today() - timedelta(days=30)
     return {
-        "popular_articles": Article.objects.published().annotate(
+        "articles": Article.objects.published().annotate(
             count=Count('hits', filter=Q(
                 articlehit__created__gt=last_month))
-        ).order_by('-count', '-publish')[:5]
+        ).order_by('-count', '-publish')[:5],
+        "title": "مقالات پربازدید"
     }
 
 

@@ -7,8 +7,6 @@ from account.mixins import AuthorAccessMixin
 from .models import Article, Category
 
 
-# Create your views here.
-
 class ArticleList(ListView):
     queryset = Article.objects.published()
     paginate_by = 3

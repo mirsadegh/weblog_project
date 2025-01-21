@@ -1,6 +1,7 @@
 {% extends 'blog/base.html' %}
 {% load static %}
 {% load ratings %}
+{% load base_tags %}
 
 {% block main %}
 
@@ -23,6 +24,8 @@
             {% block header %}
 
             {% endblock %}
+
+            {% popular_articles %}
 
 
             <!-- Post preview-->

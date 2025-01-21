@@ -200,8 +200,11 @@ header.masthead .site-heading h1, header.masthead .site-heading .h1 {
     }
   }
 
-
-
-
-
+  .popular_articles {
+    border: 1px solid #bfbfbf;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    box-shadow: -5px 5px #d5d5d5;
+}
 

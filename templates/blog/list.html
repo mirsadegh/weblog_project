@@ -5,7 +5,7 @@
 
 {% block main %}
 
-<header class="masthead" style="background-image: url('{% static " blog/assets/img/home-bg.jpg" %}')">
+<header class="masthead" style="background-image: url('{% static "blog/assets/img/home-bg.jpg" %}')">
     <div class="container position-relative px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 justify-content-center">
             <div class="col-md-10 col-lg-8 col-xl-7">
@@ -18,52 +18,63 @@
     </div>
 </header>
 
+
+
+
 <div class="container px-4 px-lg-5">
+
     <div class="row gx-4 gx-lg-5 justify-content-center">
+
         <div class="col-md-10 col-lg-8 col-xl-7">
-            {% block header %}
-
-            {% endblock %}
-
-            {% popular_articles %}
+            {% block header %} {% endblock %}
 
 
-            <!-- Post preview-->
+              <div class="row">
+<div class="col-lg-8">
+                    {% for article in object_list %}
 
-            {% for article in object_list %}
-
-            <div class="post-preview">
-                <a href="{% url 'blog:detail' article.slug %}">
-                    <h2 class="post-title">
-                        {{ article.title }}
-                        {% if article.is_special %}
-                        <span class="badge bg-danger" style="font-size: 14px">ویژه</span>
-                        {% endif %}
-
-
-                    </h2>
-                    <div>{% ratings article %}</div>
-                    <h3 class="post-subtitle">{{ article.description|striptags|truncatewords:30 }}</h3>
-                </a>
-                <p class="post-meta">
-                    نوشته شده توسط
-                    <a href="{% url 'blog:author' article.author %}">{{article.author.get_full_name}}</a>
-                    {{ article.jpublish}}
-                </p>
-                <div>
-
-
-
-                    {% for cat in article.category.active %}
-                    <a href="{% url 'blog:category' cat.slug %}">#{{ cat.title }}</a>
+                    <div class="post-preview">
+                        <a href="{% url 'blog:detail' article.slug %}">
+                            <h2 class="post-title">
+                                {{ article.title }}
+                                {% if article.is_special %}
+                                <span class="badge bg-danger" style="font-size: 14px">ویژه</span>
+                                {% endif %}
+        
+        
+                            </h2>
+                            <div>{% ratings article %}</div>
+                            <h3 class="post-subtitle">{{ article.description|striptags|truncatewords:30 }}</h3>
+                        </a>
+                        <p class="post-meta">
+                            نوشته شده توسط
+                            <a href="{% url 'blog:author' article.author %}">{{article.author.get_full_name}}</a>
+                            {{ article.jpublish}}
+                        </p>
+                        <div>
+        
+        
+        
+                            {% for cat in article.category.active %}
+                            <a href="{% url 'blog:category' cat.slug %}">#{{ cat.title }}</a>
+                            {% endfor %}
+                        </div>
+                        <div>بازدیدها: {{article.hits.count}}</div>
+                    </div>
+                    <!-- Divider-->
+                    <hr class="my-4" />
+        
                     {% endfor %}
+        
                 </div>
-                <div>بازدیدها: {{article.hits.count}}</div>
-            </div>
-            <!-- Divider-->
-            <hr class="my-4" />
 
-            {% endfor %}
+                <aside class="col-lg-4">
+                    {% popular_articles %}
+                    {% hot_articles %}
+                </aside>
+                <!-- Post preview-->
+                
+              </div>
 
             <!-- Pager-->
             {% if is_paginated %}
@@ -84,4 +95,6 @@
         </div>
     </div>
 </div>
+
+
 {% endblock %}

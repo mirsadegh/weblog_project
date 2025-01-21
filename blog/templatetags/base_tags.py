@@ -34,6 +34,20 @@ def popular_articles():
     }
 
 
+@register.inclusion_tag("blog/partials/sidebar.html")
+def hot_articles():
+    last_month = datetime.today() - timedelta(days=30)
+    content_type_id = ContentType.objects.get(
+        app_label='blog', model='article').id
+    return {
+        "articles": Article.objects.published().annotate(
+            count=Count('comments', filter=Q(comments__posted__gt=last_month) & Q(
+                comments__content_type_id=content_type_id))
+        ).order_by('-count', '-publish')[:5],
+        "title": "مقالات داغ ماه"
+    }
+
+
 @register.inclusion_tag("registration/partials/link.html")
 def link(request, link_name, content, classes):
     return {

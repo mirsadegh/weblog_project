@@ -200,6 +200,14 @@ header.masthead .site-heading h1, header.masthead .site-heading .h1 {
     }
   }
 
+  aside {
+    /* width: 2rem; */
+    /* position: absolute;
+    left: -240px;
+    top: 0;*/
+} 
+
+
   .popular_articles {
     border: 1px solid #bfbfbf;
     padding: 15px;

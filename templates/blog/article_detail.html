@@ -28,23 +28,31 @@
 </header>
 
 <article class="mb-4">
-    <div class="container px-4 px-lg-5">
+    <div class="px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 justify-content-center">
             <div class="col-md-10 col-lg-8 col-xl-7 text-justify">
-                {% popular_articles %}
-                {% if object.is_special %}
-                {% if user.is_authenticated and user.is_special_user or user == object.author or user.is_superuser %}
-                {{ object.description|safe }}
-                {% else %}
-                {{ article.description|striptags|truncatewords:30 }}
-                <p class="alert alert-warning"> این مقاله ویژه است و برای مشاهده آن <a href="#">اشتراک ویژه </a> تهیه
-                    نمایید</p>
+                <div class="row">
+             
+                <div class="col-lg-8">
+                        {% if object.is_special %}
+                        {% if user.is_authenticated and user.is_special_user or user == object.author or user.is_superuser %}
+                        {{ object.description|safe }}
+                        {% else %}
+                        {{ article.description|striptags|truncatewords:30 }}
+                        <p class="alert alert-warning"> این مقاله ویژه است و برای مشاهده آن 
+                            <a href="#">اشتراک ویژه </a> تهیه 
+                            نمایید</p>
 
-                {% endif %}
-                {% else %}
-                {{ object.description|safe }}
-                {% endif %}
-
+                        {% endif %}
+                        {% else %}
+                        {{ object.description|safe }}
+                        {% endif %}
+                </div>
+                <aside class="col-lg-4">
+                    {% popular_articles %}
+                    {% hot_articles %}
+                </aside>
+            </div>
                 {% render_comments object request %}
                 {% include_bootstrap %}
                 {% include_static %}
